@@ -6,38 +6,39 @@
 #include <stdlib.h>
 #include "constant_pool.h"
 #include "utility.h"
+#include "kernel/nvm_typedef.h"
 
-const ConstantInfo *handle_noop(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_noop(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_utf8(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_utf8(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_integer(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_integer(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_float(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_float(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_long(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_long(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_double(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_double(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_class(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_class(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_string(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_string(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_field_ref(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_field_ref(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_method_ref(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_method_ref(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_interface_method_ref(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_interface_method_ref(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_name_and_type(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_name_and_type(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_method_handle(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_method_handle(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_method_type(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_method_type(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *handle_invoke_dynamic(ByteCodeReader *reader, uint8_t tag);
+const ConstantInfo *handle_invoke_dynamic(ByteCodeReader *reader, UINT8 tag);
 
-const ConstantInfo *(*constant_info_handler[])(ByteCodeReader *reader, uint8_t tag) = {
+const ConstantInfo *(*constant_info_handler[])(ByteCodeReader *reader, UINT8 tag) = {
         handle_noop,
         handle_utf8,
         handle_noop,
@@ -59,7 +60,7 @@ const ConstantInfo *(*constant_info_handler[])(ByteCodeReader *reader, uint8_t t
         handle_invoke_dynamic,
 };
 
-const ConstantInfo *handle_invoke_dynamic(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_invoke_dynamic(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     InvokeDynamicInfo *info = (InvokeDynamicInfo *) malloc(sizeof(InvokeDynamicInfo));
     info->bootstrap_method_attr_index = reader->read_16bit(reader);
@@ -67,14 +68,14 @@ const ConstantInfo *handle_invoke_dynamic(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) info;
 }
 
-const ConstantInfo *handle_method_type(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_method_type(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantMethodType *info = (ConstantMethodType *) malloc(sizeof(ConstantMethodType));
     info->desc_type = reader->read_16bit(reader);
     return (const ConstantInfo *) info;
 }
 
-const ConstantInfo *handle_method_handle(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_method_handle(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantMethodHandle *info = (ConstantMethodHandle *) malloc(sizeof(ConstantMethodHandle));
     info->reference_kind = reader->read_8bit(reader);
@@ -82,7 +83,7 @@ const ConstantInfo *handle_method_handle(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) info;
 }
 
-const ConstantInfo *handle_name_and_type(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_name_and_type(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantNameAndType *info = (ConstantNameAndType *) malloc(sizeof(ConstantNameAndType));
     info->nameIndex = reader->read_16bit(reader);
@@ -90,7 +91,7 @@ const ConstantInfo *handle_name_and_type(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) info;
 }
 
-const ConstantInfo *handle_noop(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_noop(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
 }
 
@@ -124,7 +125,7 @@ uint8_t *decode_modified_utf8(const uint8_t *str, uint16_t len) {
     return decoded_utf8;
 }
 
-const ConstantInfo *handle_utf8(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_utf8(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     uint16_t len = reader->read_16bit(reader);
     ConstantUtf8 *integer_info = (ConstantUtf8 *) malloc(sizeof(ConstantUtf8));
@@ -136,7 +137,7 @@ const ConstantInfo *handle_utf8(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) integer_info;
 }
 
-const ConstantInfo *handle_integer(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_integer(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantIntegerInfo *integer_info = (ConstantIntegerInfo *) malloc(sizeof(ConstantIntegerInfo));
     integer_info->info.tag = tag;
@@ -144,7 +145,7 @@ const ConstantInfo *handle_integer(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) integer_info;
 }
 
-const ConstantInfo *handle_float(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_float(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantFloatInfo *float_info = (ConstantFloatInfo *) malloc(sizeof(ConstantFloatInfo));
     float_info->info.tag = tag;
@@ -152,7 +153,7 @@ const ConstantInfo *handle_float(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) float_info;
 }
 
-const ConstantInfo *handle_long(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_long(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantLongInfo *long_info = (ConstantLongInfo *) malloc(sizeof(ConstantLongInfo));
     long_info->info.tag = tag;
@@ -161,7 +162,7 @@ const ConstantInfo *handle_long(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) long_info;
 }
 
-const ConstantInfo *handle_double(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_double(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantDoubleInfo *double_info = (ConstantDoubleInfo *) malloc(sizeof(ConstantDoubleInfo));
     double_info->info.tag = tag;
@@ -170,7 +171,7 @@ const ConstantInfo *handle_double(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) double_info;
 }
 
-const ConstantInfo *handle_class(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_class(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantClassInfo *class_info = (ConstantClassInfo *) malloc(sizeof(ConstantClassInfo));
     class_info->info.tag = tag;
@@ -178,7 +179,7 @@ const ConstantInfo *handle_class(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) class_info;
 }
 
-const ConstantInfo *handle_string(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_string(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantString *string_info = (ConstantString *) malloc(sizeof(ConstantString));
     string_info->info.tag = tag;
@@ -186,7 +187,7 @@ const ConstantInfo *handle_string(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) string_info;
 }
 
-const ConstantInfo *handle_field_ref(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_field_ref(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantMethodRefInfo *ref_info = (ConstantMethodRefInfo *) malloc(sizeof(ConstantMethodRefInfo));
     ref_info->info.tag = tag;
@@ -197,7 +198,7 @@ const ConstantInfo *handle_field_ref(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) ref_info;
 }
 
-const ConstantInfo *handle_method_ref(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_method_ref(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantMethodRefInfo *ref_info = (ConstantMethodRefInfo *) malloc(sizeof(ConstantMethodRefInfo));
     ref_info->info.tag = tag;
@@ -208,7 +209,7 @@ const ConstantInfo *handle_method_ref(ByteCodeReader *reader, uint8_t tag) {
     return (const ConstantInfo *) ref_info;
 }
 
-const ConstantInfo *handle_interface_method_ref(ByteCodeReader *reader, uint8_t tag) {
+const ConstantInfo *handle_interface_method_ref(ByteCodeReader *reader, UINT8 tag) {
     log_file_function_line();
     ConstantMethodRefInfo *ref_info = (ConstantMethodRefInfo *) malloc(sizeof(ConstantMethodRefInfo));
     ref_info->info.tag = tag;
