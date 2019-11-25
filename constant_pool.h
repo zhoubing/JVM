@@ -8,10 +8,6 @@
 #include "bytecode_reader.h"
 #include "class.h"
 
-typedef struct klass Klass;
-
-typedef struct constant_pool ConstantPool;
-
 typedef struct constant_info ConstantInfo;
 
 typedef struct constant_method_ref_info ConstantMethodRefInfo;
@@ -41,10 +37,10 @@ typedef struct constant_utf8 ConstantUtf8;
 struct constant_pool {
     uint16_t pool_size;
     ConstantInfo **constant_info_arr;
-    ConstantInfo *(*create_constant_info)(ByteCodeReader *byte_code_reader, uint8_t tag);
+    ConstantInfo *(*create_constant_info)(struct vm_bytecode_reader *byte_code_reader, uint8_t tag);
 };
 
-ConstantPool *new_constant_pool(Klass *class, uint16_t pool_size);
+struct constant_pool *new_constant_pool(struct vm_class *class, uint16_t pool_size);
 
 struct constant_info {
     uint8_t tag;

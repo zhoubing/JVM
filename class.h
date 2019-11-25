@@ -11,25 +11,20 @@
 #include "utility.h"
 #include "attribute_info.h"
 
-typedef struct klass Klass;
 typedef struct interface Interface;
-typedef struct compiler_version CompilerVersion;
-typedef struct field Field;
-typedef struct method Method;
-typedef struct constant_pool ConstantPool;
 typedef struct attribute_base AttributeBase;
 
-Klass *new_instance();
+struct vm_class *vm_class_new ();
 
 struct compiler_version {
     uint16_t major_version;
     uint16_t minor_version;
 };
 
-struct klass {
-    ByteCodeReader *bytecode_reader;
-    CompilerVersion version;
-    ConstantPool *constant_pool;
+struct vm_class {
+    struct vm_bytecode_reader *bytecode_reader;
+    struct compiler_version version;
+    struct constant_pool *constant_pool;
 
     uint16_t class_access_flag;
     uint16_t this_class_index;
@@ -39,14 +34,12 @@ struct klass {
     Interface *interfaces;
 
     uint16_t field_count;
-    Field *fields;
+    struct vm_field *fields;
 
     uint16_t method_count;
-    Method *methods;
+    struct vm_method *methods;
 
-    int (*load_bytecode)(Klass *, char *, int);
-
-    Method *(*get_main)(Klass *);
+    struct vm_method *(*get_main) (struct vm_class *);
 };
 
 struct interface {
@@ -55,7 +48,7 @@ struct interface {
 //    ConstantUtf8 *(*get_name)(Klass *class);
 };
 
-struct field {
+struct vm_field {
     uint16_t access_flag;
     uint16_t name_index;
     uint16_t descriptor_index;
@@ -63,13 +56,15 @@ struct field {
     AttributeBase **attributes;
 };
 
-struct method {
+struct vm_method {
     uint16_t access_flag;
     uint16_t name_index;
     uint16_t descriptor_index;
     uint16_t attributes_count;
     AttributeBase **attributes;
-    int (*is_main)(Method *, Klass *);
+    int (*is_main) (struct vm_method *, struct vm_class *);
 };
+
+int vm_class_load_bytecode (struct vm_class *, char *, long);
 
 #endif //UNTITLED2_CLASS_H

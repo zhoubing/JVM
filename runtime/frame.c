@@ -8,10 +8,10 @@
 #include "frame.h"
 
 uint8_t get_opcode(Frame *frame) {
-    return frame->bytecode_reader->read_8bit(frame->bytecode_reader);
+    return vm_read_8bit (frame->bytecode_reader);
 }
 
-Frame *new_frame(Method *method, Klass *class) {
+Frame *new_frame(struct vm_method *method, struct vm_class *class) {
     AttributeBase **attrs = method->attributes;
     for (int i = 0; i < method->attributes_count; i++) {
         AttributeBase *attr = attrs[i];

@@ -9,14 +9,12 @@
 
 typedef struct _VMThread VMThread;
 
-struct _Interpreter {
-    Klass *class;
+struct interpreter {
+    struct vm_class *class;
     VMThread *thread;
-    void (*run)(struct _Interpreter *, Method *);
+    void (*run)(struct interpreter *, struct vm_method *);
 };
 
-typedef struct _Interpreter Interpreter;
-
-Interpreter *new_interpreter(Klass *class);
+struct interpreter *new_interpreter(struct vm_class *class);
 
 #endif //UNTITLED2_INTERPRETER_H

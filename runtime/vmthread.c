@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "vmthread.h"
 #include "instructions.h"
 

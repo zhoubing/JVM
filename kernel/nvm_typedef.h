@@ -10,8 +10,8 @@ extern "C" {
 #endif
 #endif
 
-typedef unsigned char UINT8;
-
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
 
 #ifdef __cplusplus
 #if __cplusplus

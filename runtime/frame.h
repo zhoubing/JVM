@@ -13,9 +13,7 @@ typedef union slot Slot;
 typedef struct operand_stack OperandStack;
 typedef struct local_vars LocalVars;
 
-typedef struct klass Klass;
 typedef struct bytecode_reader ByteCodeReader;
-typedef struct method Method;
 
 union slot {
     int32_t num;
@@ -94,11 +92,11 @@ typedef struct frame {
     LocalVars *localvars;
     int operandstack_num;
     OperandStack *operand_stack;
-    ByteCodeReader *bytecode_reader;
+    struct vm_bytecode_reader *bytecode_reader;
     uint8_t (*get_opcode)(struct frame *frame);
 } Frame;
 
-Frame *new_frame(Method *method, Klass *class);
+Frame *new_frame(struct vm_method *method, struct vm_class *class);
 
 LocalVars *new_local_vars(uint32_t);
 

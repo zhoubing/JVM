@@ -10,9 +10,6 @@
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
-#define ReadU4(klass) (klass->bytecode_reader->read_32bit(klass->bytecode_reader))
-#define ReadU2(klass) (klass->bytecode_reader->read_16bit(klass->bytecode_reader))
-#define ReadU1(klass) (klass->bytecode_reader->read_8bit(klass->bytecode_reader))
 #define IS_ATTRIBUTE_CODE(attr, klass) strcmp(((ConstantUtf8 *) klass->constant_pool->constant_info_arr[attr->attribute_name_index])->str, "Code") == 0
 
 

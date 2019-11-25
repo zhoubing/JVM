@@ -8,7 +8,6 @@
 #include "bytecode_reader.h"
 #include "class.h"
 
-typedef struct klass Klass;
 typedef struct attribute_base AttributeBase;
 typedef struct source_file SourceFile;
 typedef struct signature Signature;
@@ -155,6 +154,6 @@ struct exception {
     uint16_t catch_type;
 };
 
-AttributeBase *new_attribute(Klass *klass);
+AttributeBase *new_attribute(struct vm_class *klass);
 
 #endif //UNTITLED2_ATTRIBUTES_INFO_H
