@@ -4,23 +4,34 @@
 
 #include <stdlib.h>
 #include <memory.h>
+#include <stdio.h>
 #include "../attribute_info.h"
 #include "frame.h"
 
 uint8_t get_opcode(Frame *frame) {
-    return vm_read_8bit (frame->bytecode_reader);
+    log_file_function_line();
+    printf("get_opcode is %d\n", frame);
+    return vm_read_8bit(frame->bytecode_reader);
 }
 
 Frame *new_frame(struct vm_method *method, struct vm_class *class) {
     AttributeBase **attrs = method->attributes;
+    printf("new_frame is %d\n", method->attributes_count);
+    printf("new_frame is %d\n", method->is_main(method, class));
+    ConstantUtf8 *attribute_name = (ConstantUtf8 *) class->constant_pool->constant_info_arr[method->name_index];
+    printf("new_frame is %s\n", attribute_name->str);
+
     for (int i = 0; i < method->attributes_count; i++) {
         AttributeBase *attr = attrs[i];
         if (attr == 0) {
             continue;
         }
+        printf("attribute code is %s\n",
+               ((ConstantUtf8 *) class->constant_pool->constant_info_arr[attr->attribute_name_index])->str);
         if (IS_ATTRIBUTE_CODE(attr, class)) {
+            printf("is attribute code for\n");
             Code *code_attr = (Code *) attr;
-            Frame *frame = malloc(sizeof(Frame));
+            Frame *frame = malloc_x(sizeof(Frame));
             frame->prev = 0;
             frame->bytecode_reader = new_bytecode_reader(code_attr->code, code_attr->code_length);
             frame->localvars = new_local_vars(code_attr->max_locals);
@@ -82,10 +93,10 @@ Object *pop_ref(OperandStack *stack) {
 }
 
 OperandStack *new_operand_stack(uint32_t max_size) {
-    OperandStack *operand_stack = malloc(sizeof(OperandStack));
+    OperandStack *operand_stack = malloc_x(sizeof(OperandStack));
     operand_stack->max_size = max_size;
     operand_stack->size = 0;
-    operand_stack->slots = malloc(sizeof(Slot) * max_size);
+    operand_stack->slots = malloc_x(sizeof(Slot) * max_size);
     operand_stack->push_int = push_int;
     operand_stack->pop_int = pop_int;
     operand_stack->push_float = push_float;
@@ -144,8 +155,8 @@ Object *get_ref(LocalVars *vars, int index) {
 
 
 LocalVars *new_local_vars(uint32_t max_size) {
-    LocalVars *local_vars = malloc(sizeof(LocalVars));
-    local_vars->slots = malloc(sizeof(Slot) * max_size);
+    LocalVars *local_vars = malloc_x(sizeof(LocalVars));
+    local_vars->slots = malloc_x(sizeof(Slot) * max_size);
     local_vars->max_size = max_size;
     local_vars->set_int = set_int;
     local_vars->get_int = get_int;

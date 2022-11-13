@@ -10,6 +10,9 @@
 #include "constant_pool.h"
 #include "utility.h"
 #include "attribute_info.h"
+#include "stdint.h"
+
+extern struct vm_class *gClass;
 
 typedef struct interface Interface;
 typedef struct attribute_base AttributeBase;

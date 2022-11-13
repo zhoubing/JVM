@@ -4,9 +4,10 @@
 
 #ifndef UNTITLED2_BYTECODE_READER_H
 #define UNTITLED2_BYTECODE_READER_H
+#include "stdint.h"
 
 struct vm_bytecode_reader {
-    char *buf;
+    uint8_t *buf;
 
     int index;
 

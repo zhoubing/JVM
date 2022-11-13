@@ -114,21 +114,21 @@ struct constant_utf8 {
     uint16_t str_len;
 };
 
-enum {
-    Utf8 = 1,
-    Integer = 3,
-    Float = 4,
-    Long = 5,
-    Double = 6,
-    Class = 7,
-    String = 8,
-    FieldRef = 9,
-    MethodRef = 10,
-    InterfaceMethodRef = 11,
-    NameAndType = 12,
-    MethodHandle = 15,
-    MethodType = 16,
-    InvokeDynamic = 18
-} constant;
+//enum {
+//    Utf8 = 1,
+//    Integer = 3,
+//    Float = 4,
+//    Long = 5,
+//    Double = 6,
+//    Class = 7,
+//    String = 8,
+//    FieldRef = 9,
+//    MethodRef = 10,
+//    InterfaceMethodRef = 11,
+//    NameAndType = 12,
+//    MethodHandle = 15,
+//    MethodType = 16,
+//    InvokeDynamic = 18
+//} constant;
 
 #endif //UNTITLED2_CONSTANT_POOL_H
