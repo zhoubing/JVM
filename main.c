@@ -8,12 +8,12 @@
 
 int main(int argc, char **argv) {
     char *env = getenv("JAVA_HOME");
-    FILE *fp = fopen("Main2.class", "r");
+    FILE *fp = fopen("Main2.class", "rb");
     fseek(fp, 0, SEEK_END);
     long file_len = ftell(fp);
     char *p_class_buffer = malloc_x (file_len + 1);
     rewind(fp);
-    fread(p_class_buffer, 1, file_len, fp);
+    fread(p_class_buffer, sizeof(char), file_len, fp);
     p_class_buffer[file_len] = 0;
     fclose(fp);
 
