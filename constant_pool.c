@@ -179,7 +179,7 @@ const ConstantInfo *handle_class(struct vm_bytecode_reader *reader, uint8_t tag)
     ConstantClassInfo *class_info = (ConstantClassInfo *) malloc_x(sizeof(ConstantClassInfo));
     class_info->info.tag = tag;
     class_info->name_index = vm_read_16bit(reader);
-    printf("Class %d\n", class_info->name_index);
+    printf("Class #%d\n", class_info->name_index);
     return (const ConstantInfo *) class_info;
 }
 
@@ -198,7 +198,7 @@ const ConstantInfo *handle_field_ref(struct vm_bytecode_reader *reader, uint8_t 
     ref_info->info.tag = tag;
     ref_info->class_index = vm_read_16bit(reader);
     ref_info->name_and_type_index = vm_read_16bit(reader);
-    printf("FieldRef: %d, %d\n", ref_info->class_index, ref_info->name_and_type_index);
+    printf("FieldRef: #%d.#%d\n", ref_info->class_index, ref_info->name_and_type_index);
     return (const ConstantInfo *) ref_info;
 }
 
@@ -208,7 +208,7 @@ const ConstantInfo *handle_method_ref(struct vm_bytecode_reader *reader, uint8_t
     ref_info->info.tag = tag;
     ref_info->class_index = vm_read_16bit(reader);
     ref_info->name_and_type_index = vm_read_16bit(reader);
-    printf("MethodRef: %d, %d\n", ref_info->class_index, ref_info->name_and_type_index);
+    printf("MethodRef: #%d.#%d\n", ref_info->class_index, ref_info->name_and_type_index);
     return (const ConstantInfo *) ref_info;
 }
 
@@ -218,8 +218,7 @@ const ConstantInfo *handle_interface_method_ref(struct vm_bytecode_reader *reade
     ref_info->info.tag = tag;
     ref_info->class_index = vm_read_16bit(reader);
     ref_info->name_and_type_index = vm_read_16bit(reader);
-    printf("class_index: %d", ref_info->class_index);
-    printf("name_and_type_index: %d", ref_info->name_and_type_index);
+    printf("InterfaceMethodRef: #%d.#%d\n", ref_info->class_index, ref_info->name_and_type_index);
     return (const ConstantInfo *) ref_info;
 }
 

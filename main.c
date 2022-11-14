@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv) {
     char *env = getenv("JAVA_HOME");
-    FILE *fp = fopen("Main.class", "r");
+    FILE *fp = fopen("Main2.class", "r");
     fseek(fp, 0, SEEK_END);
     long file_len = ftell(fp);
     char *p_class_buffer = malloc_x (file_len + 1);

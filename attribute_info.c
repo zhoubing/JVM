@@ -13,7 +13,7 @@ AttributeBase *new_attribute(struct vm_class *klass) {
     attributeBase->attribute_name_index = vm_read_16bit(klass->bytecode_reader);;
     attributeBase->attribute_length = vm_read_32bit(klass->bytecode_reader);
     ConstantUtf8 *attribute_name = (ConstantUtf8 *) klass->constant_pool->constant_info_arr[attributeBase->attribute_name_index];
-    if (strcmp(attribute_name->str, "SourceFile") == 0) {
+    if (strncmp(attribute_name->str, "SourceFile", 10) == 0) {
         SourceFile *sourceFile = (SourceFile *) malloc_x (sizeof(SourceFile));
         log("code 1");
         memcpy(&sourceFile->base, attributeBase, sizeof(AttributeBase));
@@ -21,12 +21,12 @@ AttributeBase *new_attribute(struct vm_class *klass) {
         sourceFile->sourcefile_index = vm_read_16bit(klass->bytecode_reader);
         log("code 3");
         return (AttributeBase *) sourceFile;
-    } else if (strcmp(attribute_name->str, "Signature") == 0) {
+    } else if (strncmp(attribute_name->str, "Signature", 9) == 0) {
         Signature *signature = (Signature *) malloc_x (sizeof(Signature));
         memcpy(&signature->base, attributeBase, sizeof(AttributeBase));
         signature->signature_index = vm_read_16bit(klass->bytecode_reader);
         return (AttributeBase *) signature;
-    } else if (strcmp(attribute_name->str, "Code") == 0) {
+    } else if (strncmp(attribute_name->str, "Code", 4) == 0) {
         Code *code = (Code *) malloc_x (sizeof(Code));
         memcpy(&code->base, attributeBase, sizeof(AttributeBase));
         code->max_stack = vm_read_16bit(klass->bytecode_reader);
@@ -46,7 +46,7 @@ AttributeBase *new_attribute(struct vm_class *klass) {
             code->attributes[i] = new_attribute(klass);
         }
         return (AttributeBase *) code;
-    } else if (strcmp(attribute_name->str, "StackMapTable") == 0) {
+    } else if (strncmp(attribute_name->str, "StackMapTable", 13) == 0) {
         StackMapTable *stack_map_table = (StackMapTable *) malloc_x (sizeof(StackMapTable));
         memcpy(&stack_map_table->base, attributeBase, sizeof(AttributeBase));
         for (int i = 0; i < attributeBase->attribute_length; i++) {

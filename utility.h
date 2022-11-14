@@ -5,6 +5,7 @@
 #ifndef UNTITLED2_UTILITY_H
 #define UNTITLED2_UTILITY_H
 #include <memory.h>
+#include "stdio.h"
 
 //const int a = 1;
 #define big_edian() (*((char *) &a) == 0)
@@ -14,7 +15,7 @@
 
 #define IS_ATTRIBUTE_CODE(attr, klass) strncmp(((ConstantUtf8 *) klass->constant_pool->constant_info_arr[attr->attribute_name_index])->str, "Code", 4) == 0
 
-#define log_file_function_line() printf("File: %s, Function Name: %s Line: %d\n", __FILE__, __FUNCTION__, __LINE__)
+#define log_file_function_line() /*printf("File: %s, Function Name: %s Line: %d\n", __FILE__, __FUNCTION__, __LINE__)*/
 
 #define log_utf8(param, len) \
     char *log = malloc(len + 1); \

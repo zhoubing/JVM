@@ -38,7 +38,8 @@ int verify_class_version(struct vm_class *class) {
     class->version.major_version = major_ver;
     class->version.minor_version = minor_ver;
     int ver = major_ver - 45;
-    printf("verify_class_version: %d\n", ver);
+    printf("minor version: %d\n", minor_ver);
+    printf("major version: %d\n", major_ver);
     if (ver < 0 || ver > sizeof(java_ver) / sizeof(char *)) {
         return -1;
     }
@@ -47,35 +48,35 @@ int verify_class_version(struct vm_class *class) {
 
 void log_access_flag(uint16_t class_access_flag) {
     if ((class_access_flag & ACC_PUBLIC) == ACC_PUBLIC) {
-        log ("public");
+        log ("ACC_PUBLIC");
     }
 
     if ((class_access_flag & ACC_FINAL) == ACC_FINAL) {
-        log ("final");
+        log ("ACC_FINAL");
     }
 
     if ((class_access_flag & ACC_SUPER) == ACC_SUPER) {
-        log ("super");
+        log ("ACC_SUPER");
     }
 
     if ((class_access_flag & ACC_INTERFACE) == ACC_INTERFACE) {
-        log ("interface");
+        log ("ACC_INTERFACE");
     }
 
     if ((class_access_flag & ACC_ABSTRACT) == ACC_ABSTRACT) {
-        log ("abstract");
+        log ("ACC_ABSTRACT");
     }
 
     if ((class_access_flag & ACC_SYNTHETIC) == ACC_SYNTHETIC) {
-        log ("synthetic");
+        log ("ACC_SYNTHETIC");
     }
 
     if ((class_access_flag & ACC_ANNOTATION) == ACC_ANNOTATION) {
-        log ("annotation");
+        log ("ACC_ANNOTATION");
     }
 
     if ((class_access_flag & ACC_ENUM) == ACC_ENUM) {
-        log ("enum");
+        log ("ACC_ENUM");
     }
 }
 
@@ -96,7 +97,6 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
         log ("verify magic number failed!");
         exit(-1);
     }
-    printf("after verify_magic_number");
     if (verify_class_version(class) != 0) {
         log ("verify class version failed!");
         exit(-1);
@@ -112,14 +112,15 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
 
     class->this_class_index = vm_read_16bit(class->bytecode_reader);
     class->super_class_index = vm_read_16bit(class->bytecode_reader);
+    printf("this_class: %d\n", class->this_class_index);
+    printf("super_class: %d\n", class->super_class_index);
 
     class->interface_count = vm_read_16bit(class->bytecode_reader);
     class->interfaces = malloc_x (sizeof(Interface) * class->interface_count);
-    printf("interface_count is %d\n", class->interface_count);
     for (int i = 0; i < class->interface_count; i++) {
         class->interfaces[i].tag = vm_read_16bit(class->bytecode_reader);
     }
-
+    printf("interfaces: %d\n", class->interface_count);
     class->field_count = vm_read_16bit(class->bytecode_reader);
     class->fields = malloc_x (sizeof(struct vm_field) * class->field_count);
     log_file_function_line();
@@ -137,15 +138,33 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
         }
         log_file_function_line();
     }
-
+    printf("fields: %d\n", class->field_count);
     class->method_count = vm_read_16bit(class->bytecode_reader);
     class->methods = malloc_x (sizeof(struct vm_method) * class->method_count);
+    printf("methods: %d\n", class->method_count);
     for (int i = 0; i < class->method_count; i++) {
         class->methods[i].access_flag = vm_read_16bit(class->bytecode_reader);
         log_access_flag(class->methods[i].access_flag);
         class->methods[i].name_index = vm_read_16bit(class->bytecode_reader);
+        printf("method name index: %d\n", class->methods[i].name_index);
+
         ConstantUtf8 *constantUtf8 = (ConstantUtf8 *) class->constant_pool->constant_info_arr[class->methods[i].name_index];
+        char *s = malloc(constantUtf8->str_len + 1);
+        memset(s, 0x00, constantUtf8->str + 1);
+        memcpy(s, constantUtf8->str, constantUtf8->str_len);
+        printf("utf8 is %s\n", s);
+
+
         class->methods[i].descriptor_index = vm_read_16bit(class->bytecode_reader);
+        printf("method descriptor_index: %d\n", class->methods[i].descriptor_index);
+
+        ConstantUtf8 *descriptor = (ConstantUtf8 *) class->constant_pool->constant_info_arr[class->methods[i].descriptor_index];
+
+        char *s1 = malloc(descriptor->str_len + 1);
+        memset(s1, 0x00, descriptor->str + 1);
+        memcpy(s1, descriptor->str, descriptor->str_len);
+        printf("utf8 is %s\n", s1);
+
         class->methods[i].attributes_count = vm_read_16bit(class->bytecode_reader);
         class->methods[i].attributes = malloc_x (sizeof(AttributeBase *) * class->methods[i].attributes_count);
         class->methods[i].is_main = is_main;
@@ -154,11 +173,13 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
             class->methods[i].attributes[j] = attributeBase;
         }
     }
-    log("read attribute here");
-//  uint16_t attributes_count = vm_read_16bit (class->bytecode_reader);
-//  for (int i = 0; i < attributes_count; i++) {
-//    new_attribute (class);
-//  }
+    uint16_t attributes_count = vm_read_16bit(class->bytecode_reader);
+    for (int i = 0; i < attributes_count; i++) {
+        new_attribute(class);
+    }
+    printf("interfaces: %d, fields: %d, methods: %d, attributes: %d\n", class->interface_count, class->field_count,
+           class->method_count, attributes_count);
+
 }
 
 struct vm_method *get_main(struct vm_class *klass) {

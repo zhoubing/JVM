@@ -49,7 +49,7 @@ uint8_t *vm_read_bytes(struct vm_bytecode_reader *reader, int bytes) {
 
 struct vm_bytecode_reader *new_bytecode_reader(char *bytecode, uint32_t len) {
     log_file_function_line();
-    printf("bytecode len: %d\n", len);
+    printf("bytecode len: %d bytes\n", len);
     struct vm_bytecode_reader *reader = malloc_x (sizeof(struct vm_bytecode_reader));
     memset(reader, 0x00, sizeof(struct vm_bytecode_reader));
     reader->buf = bytecode;
