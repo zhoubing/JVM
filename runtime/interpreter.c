@@ -8,7 +8,6 @@
 #include "vmthread.h"
 
 void interpreter_run(struct interpreter *interpreter, struct vm_method *method) {
-    log_file_function_line();
     Frame *frame = new_frame(method, interpreter->class);
     interpreter->thread->vmStack->push(interpreter->thread->vmStack, frame);
     interpreter->thread->run(interpreter->thread);

@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <assert.h>
 #include "vmstack.h"
 #include "../utility.h"
 
@@ -25,10 +26,7 @@ Frame *pop(VMStack *stack) {
 
 void push(VMStack *stack, Frame *new_frame) {
     log_file_function_line();
-    if (stack->size >= stack->max_size) {
-        log("vmstack is overflow");
-        exit(1);
-    }
+    assert(stack->size < stack->max_size);
     printf("new_frame: %d\n", new_frame);
     if (stack->top_frame != 0) {
         new_frame->prev = stack->top_frame;
