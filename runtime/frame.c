@@ -16,10 +16,10 @@ uint8_t get_opcode(Frame *frame) {
 
 Frame *new_frame(struct vm_method *method, struct vm_class *class) {
     AttributeBase **attrs = method->attributes;
-    printf("new_frame is %d\n", method->attributes_count);
-    printf("new_frame is %d\n", method->is_main(method, class));
+    printf("new_frame method attributes_count is %d\n", method->attributes_count);
+    printf("new_frame method is_main %d\n", method->is_main(method, class));
     ConstantUtf8 *attribute_name = (ConstantUtf8 *) class->constant_pool->constant_info_arr[method->name_index];
-    printf("new_frame is %s\n", attribute_name->str);
+    printf("new_frame method name is %s\n", attribute_name->str);
 
     for (int i = 0; i < method->attributes_count; i++) {
         AttributeBase *attr = attrs[i];
@@ -29,7 +29,6 @@ Frame *new_frame(struct vm_method *method, struct vm_class *class) {
         printf("attribute code is %s\n",
                ((ConstantUtf8 *) class->constant_pool->constant_info_arr[attr->attribute_name_index])->str);
         if (IS_ATTRIBUTE_CODE(attr, class)) {
-            printf("is attribute code for\n");
             Code *code_attr = (Code *) attr;
             Frame *frame = malloc_x(sizeof(Frame));
             frame->prev = 0;
