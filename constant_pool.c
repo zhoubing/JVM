@@ -227,7 +227,7 @@ struct constant_pool *new_constant_pool(struct vm_class *class, uint16_t pool_si
     struct constant_pool *pool = malloc_x(sizeof(struct constant_pool));
 //    class->constant_pool = pool; //debug?
     pool->pool_size = pool_size;
-    pool->constant_info_arr = malloc_x(sizeof(struct constant_info) * pool_size);
+    pool->constant_info_arr = malloc_x(sizeof(struct constant_info *) * pool_size);
     for (int i = 1; i < pool_size; i++) {
         uint8_t tag = vm_read_8bit(class->bytecode_reader);
         assert(tag > 0 && tag < ARRAY_SIZE(constant_info_handler));

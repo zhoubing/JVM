@@ -35,8 +35,7 @@ typedef struct exception Exception;
 struct attribute_base {
     uint16_t attribute_name_index;
     uint32_t attribute_length;
-
-    void (*read_info)(AttributeBase *attribute);
+//    void (*read_info)(AttributeBase *attribute);
 };
 
 struct source_file {
@@ -97,14 +96,29 @@ struct source_debug_extensions {
 
 };
 
+struct line_number_table_item {
+    uint16_t start_pc;
+    uint16_t line_number;
+};
+
 struct line_number_table {
     AttributeBase base;
+    uint16_t line_number_table_length;
+    struct line_number_table_item *table_item;
+};
 
+struct local_variable_table_item {
+    uint16_t start_pc;
+    uint16_t length;
+    uint16_t name_index;
+    uint16_t descriptor_index;
+    uint16_t index;
 };
 
 struct local_variable_table {
     AttributeBase base;
-
+    uint16_t local_variable_table_length;
+    struct local_variable_table_item *table_item
 };
 
 struct local_variable_type_table {

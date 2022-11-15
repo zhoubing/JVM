@@ -142,16 +142,17 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
     class->method_count = vm_read_16bit(class->bytecode_reader);
     class->methods = malloc_x (sizeof(struct vm_method) * class->method_count);
     printf("methods: %d\n", class->method_count);
+
     for (int i = 0; i < class->method_count; i++) {
         class->methods[i].access_flag = vm_read_16bit(class->bytecode_reader);
         log_access_flag(class->methods[i].access_flag);
         class->methods[i].name_index = vm_read_16bit(class->bytecode_reader);
         printf("method name index: %d\n", class->methods[i].name_index);
 
-        ConstantUtf8 *constantUtf8 = (ConstantUtf8 *) class->constant_pool->constant_info_arr[class->methods[i].name_index];
-        char *s = malloc(constantUtf8->str_len + 1);
-        memset(s, 0x00, constantUtf8->str + 1);
-        memcpy(s, constantUtf8->str, constantUtf8->str_len);
+        ConstantUtf8 *constantUtf8 = (ConstantUtf8 *) (class->constant_pool->constant_info_arr[class->methods[i].name_index]);
+        char *s = malloc(constantUtf8->length + 1);
+        memset(s, 0x00, constantUtf8->length + 1);
+        memcpy(s, constantUtf8->str, constantUtf8->length);
         printf("utf8 is %s\n", s);
 
 
@@ -160,9 +161,9 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
 
         ConstantUtf8 *descriptor = (ConstantUtf8 *) class->constant_pool->constant_info_arr[class->methods[i].descriptor_index];
 
-        char *s1 = malloc(descriptor->str_len + 1);
-        memset(s1, 0x00, descriptor->str + 1);
-        memcpy(s1, descriptor->str, descriptor->str_len);
+        char *s1 = malloc(descriptor->length + 1);
+        memset(s1, 0x00, descriptor->length + 1);
+        memcpy(s1, descriptor->str, descriptor->length);
         printf("utf8 is %s\n", s1);
 
         class->methods[i].attributes_count = vm_read_16bit(class->bytecode_reader);

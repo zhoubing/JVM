@@ -6,7 +6,34 @@
 #include "class.h"
 #include "runtime/interpreter.h"
 
+
+struct A {
+    char *a;
+    char *b;
+};
 int main(int argc, char **argv) {
+//    struct A *a = malloc(sizeof(struct A));
+//    a->a = "1a";
+//    a->b = "1b";
+//
+//    struct A *b = malloc(sizeof(struct A));
+//    b->a = "2a";
+//    b->b = "2b";
+//
+//    struct A *c = malloc(sizeof(struct A));
+//    c->a = "3a";
+//    c->b = "3b";
+//
+//    struct A **aar = malloc(sizeof (struct A *));
+//    aar[0] = a;
+//    aar[1] = b;
+//    aar[3] = c;
+//
+//    printf("%s\n", aar[0]->a);
+//    printf("%s\n", aar[3]->a);
+//
+//    return 0;
+
     char *env = getenv("JAVA_HOME");
     FILE *fp = fopen("Main2.class", "rb");
     fseek(fp, 0, SEEK_END);
