@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "thread.h"
 #include "instructions.h"
 #include "../utility.h"

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "class.h"
 #include "runtime/interpreter.h"
-
+#include "runtime/localvars.h"
 
 struct A {
     char *a;
@@ -56,30 +56,15 @@ int main(int argc, char **argv) {
         Interpreter_Run(Interpreter_New(p_vm_class), main);
     }
 
-//    OperandStack *vmstack = new_operand_stack(10);
-//    vmstack->push_long(vmstack, 9223372036854775807);
-//    vmstack->push_long(vmstack, 9223372036854775801);
-//    vmstack->push_long(vmstack, 9223372036854775800);
-//    vmstack->push_long(vmstack, 9223372036854775711);
-//    vmstack->push_long(vmstack, 9223372036854775511);
+//    LocalVars  * lv = LocalVars_New(32);
+//    LocalVars_SetInt(lv, 0, 100);
+//    LocalVars_SetInt(lv, 1, -100);
+//    LocalVars_SetLong(lv, 2, 2997924580);
+//    LocalVars_SetLong(lv, 3, -2997924580);
 //
-//    printf("%ld\n", vmstack->pop_long(vmstack));
-//    printf("%ld\n", vmstack->pop_long(vmstack));
-//    printf("%ld\n", vmstack->pop_long(vmstack));
-//    printf("%ld\n", vmstack->pop_long(vmstack));
-//    printf("%ld\n", vmstack->pop_long(vmstack));
-
-//    LocalVars *localVars = new_local_vars(10);
-//    localVars->set_long(localVars, 0, 9223372036854775807);
-//    localVars->set_long(localVars, 2, 9223372036854775801);
-//    localVars->set_long(localVars, 4, 9223372036854775800);
-//    localVars->set_long(localVars, 6, 9223372036854775711);
-//    localVars->set_long(localVars, 8, 9223372036854775511);
-//
-//    printf("%ld\n", localVars->get_long(localVars, 4));
-//    printf("%ld\n", localVars->get_long(localVars, 2));
-//    printf("%ld\n", localVars->get_long(localVars, 8));
-//    printf("%ld\n", localVars->get_long(localVars, 0));
-//    printf("%ld\n", localVars->get_long(localVars, 6));
+//    printf("%d\n", LocalVars_GetInt(lv, 0));
+//    printf("%d\n", LocalVars_GetInt(lv, 1));
+//    printf("%d\n", LocalVars_GetLong(lv, 2));
+//    printf("%d\n", LocalVars_GetLong(lv, 3));
     return 0;
 }

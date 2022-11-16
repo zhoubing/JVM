@@ -8,14 +8,12 @@
 #include "../bytecode_reader.h"
 #include "frame.h"
 
-typedef struct _Instruction Instruction;
+typedef struct _Inst {
 
-struct _Instruction {
+    void (*read_operands)(struct _Inst *, Frame *);
 
-    void (*read_operands)(Instruction *, Frame *);
-
-    int (*run)(Instruction *, Frame *);
-};
+    int (*run)(struct _Inst *, Frame *);
+} Instruction;
 
 extern Instruction
         instruction_table[];

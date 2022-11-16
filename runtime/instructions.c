@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <assert.h>
 #include "instructions.h"
 #include "../utility.h"
 
@@ -84,7 +85,7 @@ void read_operand_nop(Instruction *instruction, Frame *bytecode_reader) {
 }
 
 void read_operand_uint16(Instruction *instruction, Frame *frame) {
-    frame->localvars->_operand._index.index = (uint16_t) vm_read_16bit(frame);
+    frame->localvars->_operand._index.index = (uint16_t) vm_read_16bit(frame->bytecode_reader);
 }
 
 void read_operand_int16(Instruction *instruction, Frame *frame) {
@@ -96,7 +97,7 @@ void read_operand_uint8(Instruction *instruction, Frame *frame) {
 }
 
 void read_operand_int8(Instruction *instruction, Frame *frame) {
-    frame->localvars->_operand._index._int8 = (int8_t) vm_read_8bit(frame);
+    frame->localvars->_operand._index._int8 = (int8_t) vm_read_8bit(frame->bytecode_reader);
 }
 
 void read_operand_int32(Instruction *instruction, Frame *frame) {
@@ -126,6 +127,10 @@ void read_operand_newarray(Instruction *instruction, Frame *bytecode_reader) {
 
 void read_operand_multianewarray(Instruction *instruction, Frame *bytecode_reader) {
 
+}
+
+void READ_OPERANDS_FUNCTION_NAME(getstatic)(Instruction *instruction, Frame *bytecode_reader) {
+    assert(0);
 }
 
 void pop2(Frame *frame, int *val1, int *val2) {
@@ -881,7 +886,7 @@ INSTRUCTION_EXEC(return) {
 }
 
 INSTRUCTION_EXEC(getstatic) {
-
+    assert(0);
 }
 
 INSTRUCTION_EXEC(putstatic) {
