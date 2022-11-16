@@ -11,6 +11,7 @@ struct A {
     char *a;
     char *b;
 };
+
 int main(int argc, char **argv) {
 //    struct A *a = malloc(sizeof(struct A));
 //    a->a = "1a";
@@ -52,8 +53,7 @@ int main(int argc, char **argv) {
     if (main == 0) {
         exit(-200);
     } else {
-        struct interpreter *interpreter = new_interpreter(p_vm_class);
-        interpreter->run(interpreter, main);
+        Interpreter_Run(Interpreter_New(p_vm_class), main);
     }
 
 //    OperandStack *vmstack = new_operand_stack(10);

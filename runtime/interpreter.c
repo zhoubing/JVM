@@ -5,18 +5,21 @@
 #include <stdlib.h>
 #include "interpreter.h"
 #include "frame.h"
-#include "vmthread.h"
+#include "thread.h"
 
-void interpreter_run(struct interpreter *interpreter, struct vm_method *method) {
-    Frame *frame = new_frame(method, interpreter->class);
-    interpreter->thread->vmStack->push(interpreter->thread->vmStack, frame);
-    interpreter->thread->run(interpreter->thread);
+void Interpreter_Run(Interpreter *interpreter, struct vm_method *method) {
+    Frame *frame = Frame_New(method, interpreter->class);
+    Interpreter_Push(interpreter->thread->vmStack, frame);
+    Thread_Run(interpreter->thread);
 }
 
-struct interpreter *new_interpreter(struct vm_class *class) {
-    struct interpreter *inter = malloc_x(sizeof(struct interpreter));
-    inter->class = class;
-    inter->run = interpreter_run;
-    inter->thread = new_vmthread();
-    return inter;
+Interpreter *Interpreter_New(struct vm_class *class) {
+    Interpreter *ip = malloc_x(sizeof(Interpreter));
+    ip->class = class;
+    ip->thread = Thread_New();
+    return ip;
+}
+
+void Interpreter_Push(VMStack *vmStack, Frame *frame) {
+    vmStack->push(vmStack, frame);
 }

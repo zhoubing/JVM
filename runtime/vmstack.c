@@ -27,7 +27,7 @@ Frame *pop(VMStack *stack) {
 void push(VMStack *stack, Frame *new_frame) {
     log_file_function_line();
     assert(stack->size < stack->max_size);
-    printf("new_frame: %d\n", new_frame);
+    printf("Frame_New: %d\n", new_frame);
     if (stack->top_frame != 0) {
         new_frame->prev = stack->top_frame;
     }

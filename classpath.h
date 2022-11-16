@@ -8,6 +8,7 @@
 #include "runtime/frame.h"
 #include "entry.h"
 
+typedef struct ByteCodeReader ByteCodeReader;
 typedef struct classpath {
     ByteCodeReader *(*readClass)(Entry *class_entry);
 } ClassPath;

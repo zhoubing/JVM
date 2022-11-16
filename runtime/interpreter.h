@@ -6,15 +6,17 @@
 #define UNTITLED2_INTERPRETER_H
 
 #include "../class.h"
+#include "thread.h"
 
-typedef struct _VMThread VMThread;
-
-struct interpreter {
+typedef struct {
     struct vm_class *class;
-    VMThread *thread;
-    void (*run)(struct interpreter *, struct vm_method *);
-};
+    Thread *thread;
+} Interpreter;
 
-struct interpreter *new_interpreter(struct vm_class *class);
+void Interpreter_Run(Interpreter *, struct vm_method *);
+
+Interpreter *Interpreter_New(struct vm_class *class);
+
+void Interpreter_Push(VMStack *, Frame *);
 
 #endif //UNTITLED2_INTERPRETER_H

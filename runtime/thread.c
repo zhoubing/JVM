@@ -4,11 +4,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "vmthread.h"
+#include "thread.h"
 #include "instructions.h"
 #include "../utility.h"
 
-void run(VMThread *this) {
+void Thread_Run(Thread *this) {
     for (;;) {
         Frame *current_frame = this->vmStack->peek(this->vmStack);
         printf("%d\n", current_frame);
@@ -32,9 +32,8 @@ void run(VMThread *this) {
     }
 }
 
-VMThread *new_vmthread() {
-    VMThread *vmThread = malloc_x(sizeof(VMThread));
+Thread *Thread_New() {
+    Thread *vmThread = malloc_x(sizeof(Thread));
     vmThread->vmStack = new_vmstack(1024);
-    vmThread->run = run;
     return vmThread;
 }
