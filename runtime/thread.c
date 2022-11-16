@@ -14,6 +14,7 @@ void Thread_Run(Thread *this) {
         printf("%d\n", current_frame);
         current_frame->pc = current_frame->bytecode_reader->index;
         uint8_t op_code = current_frame->get_opcode(current_frame);
+        printf("op_code is %d\n", op_code);
         Instruction instruction = instruction_table[op_code];
         instruction.read_operands(&instruction, current_frame);
         if (instruction.run(&instruction, current_frame) != 0) {
