@@ -21,4 +21,6 @@ typedef struct Frame {
 
 Frame *Frame_New(struct vm_method *method, struct vm_class *class);
 
+uint8_t Frame_GetOpCode(Frame *);
+
 #endif //UNTITLED2_FRAME_H

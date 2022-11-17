@@ -989,7 +989,7 @@ INSTRUCTION_EXEC(impdepl) {
 
 }
 
-Instruction instruction_table[] = {
+Instruction instruction_sets[] = {
         INSTRUCTION_NOP(nop),               //0x00
         INSTRUCTION_NOP(aconst_null),       //0x01
         INSTRUCTION_NOP(iconst_m1),         //0x02

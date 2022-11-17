@@ -7,13 +7,11 @@
 #include "vmstack.h"
 #include "../utility.h"
 
-Frame *peek(VMStack *stack) {
-    log_file_function_line();
+Frame *VMStack_Peek(VM_Stack *stack) {
     return stack->top_frame;
 }
 
-Frame *pop(VMStack *stack) {
-    log_file_function_line();
+Frame *VMStack_Pop(VM_Stack *stack) {
     if (stack->size == 0) {
         return 0;
     }
@@ -24,7 +22,7 @@ Frame *pop(VMStack *stack) {
     return top_frame;
 }
 
-void push(VMStack *stack, Frame *new_frame) {
+void VMStack_Push(VM_Stack *stack, Frame *new_frame) {
     log_file_function_line();
     assert(stack->size < stack->max_size);
     printf("Frame_New: %d\n", new_frame);
@@ -37,13 +35,10 @@ void push(VMStack *stack, Frame *new_frame) {
     printf("stack->top_frame: %d\n", stack->top_frame);
 }
 
-VMStack *new_vmstack(uint32_t stack_size) {
-    VMStack *stack = malloc_x(sizeof(VMStack));
+VM_Stack *VMStack_New(uint32_t stack_size) {
+    VM_Stack *stack = malloc_x(sizeof(VM_Stack));
     stack->max_size = stack_size;
     stack->size = 0;
     stack->top_frame = 0;
-    stack->pop = pop;
-    stack->push = push;
-    stack->peek = peek;
     return stack;
 }

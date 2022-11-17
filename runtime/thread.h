@@ -9,7 +9,7 @@
 
 typedef struct {
     uint32_t pc;    //program counter
-    VMStack *vmStack; //jvm stack
+    VM_Stack *vmStack; //jvm stack
 } Thread;
 
 void Thread_Run(Thread *thread);

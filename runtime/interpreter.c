@@ -20,6 +20,6 @@ Interpreter *Interpreter_New(struct vm_class *class) {
     return ip;
 }
 
-void Interpreter_Push(VMStack *vmStack, Frame *frame) {
-    vmStack->push(vmStack, frame);
+void Interpreter_Push(VM_Stack *vmStack, Frame *frame) {
+    VMStack_Push(vmStack, frame);
 }

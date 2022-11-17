@@ -7,18 +7,18 @@
 #ifndef UNTITLED2_STACK_H
 #define UNTITLED2_STACK_H
 
-typedef struct _VMStack {
+typedef struct {
     uint32_t max_size;
     uint32_t size;
     Frame *top_frame;
+} VM_Stack;
 
-    void (*push)(struct _VMStack *stack, Frame *new_frame);
+VM_Stack *VMStack_New(uint32_t stack_size);
 
-    Frame *(*pop)(struct _VMStack *stack);
+void VMStack_Push(VM_Stack *stack, Frame *newframe);
 
-    Frame *(*peek)(struct _VMStack *stack);
-} VMStack;
+Frame *VMStack_Pop(VM_Stack *stack);
 
-VMStack *new_vmstack(uint32_t stack_size);
+Frame *VMStack_Peek(VM_Stack *stack);
 
 #endif //UNTITLED2_STACK_H

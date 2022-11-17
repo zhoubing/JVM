@@ -15,7 +15,6 @@ typedef struct _Inst {
     int (*run)(struct _Inst *, Frame *);
 } Instruction;
 
-extern Instruction
-        instruction_table[];
+extern Instruction instruction_sets[];
 
 #endif //UNTITLED2_INSTRUCTIONS_H

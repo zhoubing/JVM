@@ -17,6 +17,6 @@ void Interpreter_Run(Interpreter *, struct vm_method *);
 
 Interpreter *Interpreter_New(struct vm_class *class);
 
-void Interpreter_Push(VMStack *, Frame *);
+void Interpreter_Push(VM_Stack *, Frame *);
 
 #endif //UNTITLED2_INTERPRETER_H

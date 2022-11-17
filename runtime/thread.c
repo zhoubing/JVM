@@ -8,15 +8,17 @@
 #include "thread.h"
 #include "instructions.h"
 #include "../utility.h"
+#include "../opcode/opcode.h"
 
 void Thread_Run(Thread *this) {
     for (;;) {
-        Frame *current_frame = this->vmStack->peek(this->vmStack);
+        Frame *current_frame = VMStack_Peek(this->vmStack);
         printf("%d\n", current_frame);
         current_frame->pc = current_frame->bytecode_reader->index;
-        uint8_t op_code = current_frame->get_opcode(current_frame);
-        printf("op_code is %d\n", op_code);
-        Instruction instruction = instruction_table[op_code];
+        uint8_t op_code = Frame_GetOpCode(current_frame);
+        printf("op_code is %x\n", op_code);
+
+        Instruction instruction = instruction_sets[op_code];
         instruction.read_operands(&instruction, current_frame);
         if (instruction.run(&instruction, current_frame) != 0) {
             for (int i = 0; i < current_frame->localvars_num; i++) {
@@ -36,6 +38,6 @@ void Thread_Run(Thread *this) {
 
 Thread *Thread_New() {
     Thread *vmThread = malloc_x(sizeof(Thread));
-    vmThread->vmStack = new_vmstack(1024);
+    vmThread->vmStack = VMStack_New(1024);
     return vmThread;
 }

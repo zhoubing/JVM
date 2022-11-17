@@ -9,8 +9,7 @@
 #include "../attribute_info.h"
 #include "frame.h"
 
-uint8_t get_opcode(Frame *frame) {
-    log_file_function_line();
+uint8_t Frame_GetOpCode(Frame *frame) {
     printf("get_opcode is %d\n", frame);
     return vm_read_8bit(frame->bytecode_reader);
 }
@@ -37,7 +36,6 @@ Frame *Frame_New(struct vm_method *method, struct vm_class *class) {
             frame->localvars_num = code_attr->max_locals;
             frame->operand_stack = OperandStack_New(code_attr->max_stack);
             frame->operandstack_num = code_attr->max_stack;
-            frame->get_opcode = get_opcode;
             return frame;
         }
     }
