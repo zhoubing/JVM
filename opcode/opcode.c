@@ -7,6 +7,8 @@
 #include "constants.h"
 #include "loads.h"
 #include "stores.h"
+#include "stack.h"
+#include "math.h"
 
 OpCode opcode_sets[] = {
         //0x00
@@ -181,65 +183,100 @@ OpCode opcode_sets[] = {
         {Read_bastore, Run_bastore},
         //0x55
         {Read_castore, Run_castore},
-        //0x55
+        //0x56
         {Read_sastore, Run_sastore},
-
-//        INSTRUCTION_NOP(pop),               //0x57
-//        INSTRUCTION_NOP(pop2),              //0x58
-//        INSTRUCTION_NOP(dup),               //0x59
-//        INSTRUCTION_NOP(dup_x1),            //0x5a
-//        INSTRUCTION_NOP(dup_x2),            //0x5b
-//        INSTRUCTION_NOP(dup2),              //0x5c
-//        INSTRUCTION_NOP(dup2_x1),           //0x5d
-//        INSTRUCTION_NOP(dup2_x2),           //0x5e
-//        INSTRUCTION_NOP(swap),              //0x5f
-//        INSTRUCTION_NOP(iadd),              //0x60
-//        INSTRUCTION_NOP(ladd),              //0x61
-//        INSTRUCTION_NOP(fadd),              //0x62
-//        INSTRUCTION_NOP(dadd),              //0x63
-//        INSTRUCTION_NOP(isub),              //0x64
-//        INSTRUCTION_NOP(lsub),              //0x65
-//        INSTRUCTION_NOP(fsub),              //0x66
-//        INSTRUCTION_NOP(dsub),              //0x67
-//
-//        INSTRUCTION_NOP(imul),              //0x68
-//        INSTRUCTION_NOP(lmul),              //0x69
-//        INSTRUCTION_NOP(fmul),              //0x6a
-//        INSTRUCTION_NOP(dmul),              //0x6b
-//
-//        INSTRUCTION_NOP(idiv),              //0x6c
-//        INSTRUCTION_NOP(ldiv),              //0x6d
-//        INSTRUCTION_NOP(fdiv),              //0x6e
-//        INSTRUCTION_NOP(ddiv),              //0x6f
-//
-//        INSTRUCTION_NOP(irem),              //0x70
-//        INSTRUCTION_NOP(lrem),              //0x71
-//        INSTRUCTION_NOP(frem),              //0x72
-//        INSTRUCTION_NOP(drem),              //0x73
-//
-//        INSTRUCTION_NOP(ineg),              //0x74
-//        INSTRUCTION_NOP(lneg),              //0x75
-//        INSTRUCTION_NOP(fneg),              //0x76
-//        INSTRUCTION_NOP(dneg),              //0x77
-//
-//        INSTRUCTION_NOP(ishl),              //0x78
-//        INSTRUCTION_NOP(lshl),              //0x79
-//
-//        INSTRUCTION_NOP(ishr),              //0x7a
-//        INSTRUCTION_NOP(lshr),              //0x7b
-//
-//        INSTRUCTION_NOP(iushr),             //0x7c
-//        INSTRUCTION_NOP(lushr),             //0x7d
-//
-//        INSTRUCTION_NOP(iand),              //0x7e
-//        INSTRUCTION_NOP(land),              //0x7f
-//
-//        INSTRUCTION_NOP(ior),               //0x80
-//        INSTRUCTION_NOP(lor),               //0x81
-//        INSTRUCTION_NOP(ixor),              //0x82
-//        INSTRUCTION_NOP(lxor),              //0x83
-//
-//        INSTRUCTION_IINC(iinc),             //0x84
+        //0x57
+        {Read_pop, Run_pop},
+        //0x58
+        {Read_pop2, Run_pop2},
+        //0x59
+        {Read_dup, Run_dup},
+        //0x5a
+        {Read_dup_x1, Run_dup_x1},
+        //0x5b
+        {Read_dup_x2, Run_dup_x2},
+        //0x5c
+        {Read_dup2, Run_dup2},
+        //0x5d
+        {Read_dup2_x1, Run_dup2_x1},
+        //0x5e
+        {Read_dup2_x2, Run_dup2_x2},
+        //0x5f
+        {Read_swap, Run_swap},
+        //0x60
+        {Read_iadd, Run_iadd},
+        //0x61
+        {Read_ladd, Run_ladd},
+        //0x62
+        {Read_fadd, Run_fadd},
+        //0x63
+        {Read_dadd, Run_dadd},
+        //0x64
+        {Read_isub, Run_isub},
+        //0x65
+        {Read_lsub, Run_lsub},
+        //0x66
+        {Read_lsub, Run_fsub},
+        //0x67
+        {Read_dsub, Run_dsub},
+        //0x68
+        {Read_imul, Run_imul},
+        //0x69
+        {Read_lmul, Run_lmul},
+        //0x6a
+        {Read_fmul, Run_fmul},
+        //0x6b
+        {Read_dmul, Run_dmul},
+        //0x6c
+        {Read_idiv, Run_idiv},
+        //0x6d
+        {Read_ldiv, Run_ldiv},
+        //0x6e
+        {Read_fdiv, Run_fdiv},
+        //0x6f
+        {Read_ddiv, Run_ddiv},
+        //0x70
+        {Read_irem, Run_irem},
+        //0x71
+        {Read_lrem, Run_lrem},
+        //0x72
+        {Read_frem, Run_frem},
+        //0x73
+        {Read_drem, Run_drem},
+        //0x74
+        {Read_ineg, Run_ineg},
+        //0x75
+        {Read_lneg, Run_lneg},
+        //0x76
+        {Read_fneg, Run_fneg},
+        //0x77
+        {Read_dneg, Run_dneg},
+        //0x78
+        {Read_ishl, Run_ishl},
+        //0x79
+        {Read_lshl, Run_lshl},
+        //0x7a
+        {Read_ishr, Run_ishr},
+        //0x7b
+        {Read_lshr, Run_lshr},
+        //0x7c
+        {Read_iushr, Run_iushr},
+        //0x7d
+        {Read_lushr, Run_lushr},
+        //0x7e
+        {Read_iand, Run_iand},
+        //0x7f
+        {Read_land, Run_land},
+        //0x80
+        {Read_ior, Run_ior},
+        //0x81
+        {Read_lor, Run_lor},
+        //0x82
+        {Read_ixor, Run_ixor},
+        //0x83
+        {Read_lxor, Run_lxor},
+        //0x84
+        {Read_iinc, Run_iinc},
 //
 //        INSTRUCTION_NOP(i2l),               //0x85
 //        INSTRUCTION_NOP(i2f),               //0x86
