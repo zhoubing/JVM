@@ -54,11 +54,13 @@ int Run_istore_0(Frame *frame) {
 }
 
 void Read_istore_1(Frame *frame) {
-    assert(0);
+
 }
 
 int Run_istore_1(Frame *frame) {
-    assert(0);
+    int val = OperandStack_PopInt(frame->operand_stack);
+    LocalVars_SetInt(frame->localvars, 1, val);
+    return 0;
 }
 
 void Read_istore_2(Frame *frame) {

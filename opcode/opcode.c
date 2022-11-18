@@ -9,6 +9,12 @@
 #include "stores.h"
 #include "stack.h"
 #include "math.h"
+#include "conversions.h"
+#include "comparisions.h"
+#include "control.h"
+#include "references.h"
+#include "extended.h"
+#include "reserved.h"
 
 OpCode opcode_sets[] = {
         //0x00
@@ -277,93 +283,154 @@ OpCode opcode_sets[] = {
         {Read_lxor, Run_lxor},
         //0x84
         {Read_iinc, Run_iinc},
+        //0x85
+        {Read_i2l, Run_i2l},
+        //0x86
+        {Read_i2f, Run_i2f},
+        //0x87
+        {Read_i2d, Run_i2d},
+        //0x88
+        {Read_l2i, Run_l2i},
+        //0x89
+        {Read_l2f, Run_l2f},
+        //0x8a
+        {Read_l2d, Run_l2d},
+        //0x8b
+        {Read_f2i, Run_f2i},
+        //0x8c
+        {Read_f2l, Run_f2l},
+        //0x8d
+        {Read_f2d, Run_f2d},
+        //0x8e
+        {Read_d2i, Run_d2i},
+        //0x8f
+        {Read_d2l, Run_d2l},
+        //0x90
+        {Read_d2f, Run_d2f},
+        //0x91
+        {Read_i2b, Run_i2b},
+        //0x92
+        {Read_i2c, Run_i2s},
+        //0x93
+        {Read_i2s, Run_i2s},
+        //0x94
+        {Read_lcmp, Run_lcmp},
+        //0x95
+        {Read_fcmpl, Run_fcmpl},
+        //0x96
+        {Read_fcmpg, Run_fcmpg},
+        //0x97
+        {Read_dcmpl, Run_dcmpl},
+        //0x98
+        {Read_dcmpg, Run_dcmpg},
+        //0x99
+        {Read_ifeq, Run_ifeq},
+        //0x9a
+        {Read_ifne, Run_ifne},
+        //0x9b
+        {Read_iflt, Run_iflt},
+        //0x9c
+        {Read_ifge, Run_ifge},
+        //0x9d
+        {Read_ifgt, Run_ifgt},
+        //0x9e
+        {Read_ifle, Run_ifle},
+        //0x9f
+        {Read_if_icmpeq, Run_if_icmpeq},
+        //0xa0
+        {Read_if_icmpne, Run_if_icmpne},
+        //0xa1
+        {Read_if_icmplt, Run_if_icmplt},
+        //0xa2
+        {Read_if_icmpge, Run_if_icmpge},
+        //0xa3
+        {Read_if_icmpgt, Run_if_icmpgt},
+        //0xa4
+        {Read_if_icmple, Run_if_icmple},
+        //0xa5
+        {Read_if_acmpeq, Run_if_acmpeq},
+        //0xa6
+        {Read_if_acmpne, Run_if_acmpne},
+        //0xa7
+        {Read_goto, Run_goto},
+        //0xa8
+        {Read_jsr, Run_jsr},
+        //0xa9
+        {Read_ret, Run_ret},
+        //0xaa
+        {Read_tableswitch, Run_tableswitch},
+        //0xab
+        {Read_lookupswitch, Run_lookupswitch},
+        //0xac
+        {Read_ireturn, Run_ireturn},
+        //0xad
+        {Read_lreturn, Run_lreturn},
+        //0xae
+        {Read_freturn, Run_freturn},
+        //0xaf
+        {Read_dreturn, Run_dreturn},
+        //0xb0
+        {Read_areturn, Run_areturn},
+        //0xb1
+        {Read_return, Run_return},
+        //0xb2
+        {Read_getstatic, Run_getstatic},
+        //0xb3
+        {Read_putstatic, Run_putstatic},
+        //0xb4
+        {Read_getfield, Run_getfield},
+        //0xb5
+        {Read_putfield, Run_putfield},
+        //0xb6
+        {Read_invokevirtual, Run_invokevirtual},
+        //0xb7
+        {Read_invokespecial, Run_invokespecial},
+        //0xb8
+        {Read_invokestatic, Run_invokestatic},
+        //0xb9
+        {Read_invokeinterface, Run_invokeinterface},
+        //0xba
+        {Read_invokedynamic, Run_invokedynamic},
+        //0xbb
+        {Read_new, Run_new},
+        //0xbc
+        {Read_newarray, Run_newarray},
+        //0xbd
+        {Read_anewarray, Run_anewarray},
+        //0xbe
+        {Read_arraylength, Run_arraylength},
+        //0xbf
+        {Read_athrow, Run_athrow},
+        //0xc0
+        {Read_checkcast, Run_checkcast},
+        //0xc1
+        {Read_instanceof, Run_instanceof},
+        //0xc2
+        {Read_monitorenter, Run_monitorenter},
+        //0xc3
+        {Read_monitorexit, Run_monitorexit},
+        //0xc4
+        {Read_wide, Run_wide},
+        //0xc5
+        {Read_multianewarray, Run_multianewarray},
+        //0xc6
+        {Read_ifnull, Run_ifnull},
+        //0xc7
+        {Read_ifnonnull, Run_ifnonnull},
+        //0xc8
+        {Read_goto_w, Run_goto_w},
+        //0xc9
+        {Read_jsr_w, Run_jsr_w},
+        //0xca
+        {Read_breakpoint, Run_breakpoint},
+
+
+//        void Read_impdep1(Frame *frame);
 //
-//        INSTRUCTION_NOP(i2l),               //0x85
-//        INSTRUCTION_NOP(i2f),               //0x86
-//        INSTRUCTION_NOP(i2d),               //0x87
+//        int Run_impdep1(Frame *frame);
 //
-//        INSTRUCTION_NOP(l2i),               //0x88
-//        INSTRUCTION_NOP(l2f),               //0x89
-//        INSTRUCTION_NOP(l2d),               //0x8a
+//        void Read_impdep2(Frame *frame);
 //
-//        INSTRUCTION_NOP(f2i),               //0x8b
-//        INSTRUCTION_NOP(f2l),               //0x8c
-//        INSTRUCTION_NOP(f2d),               //0x8d
-//
-//        INSTRUCTION_NOP(d2i),               //0x8e
-//        INSTRUCTION_NOP(d2l),               //0x8f
-//        INSTRUCTION_NOP(d2f),               //0x90
-//
-//        INSTRUCTION_NOP(i2b),               //0x91
-//        INSTRUCTION_NOP(i2c),               //0x92
-//        INSTRUCTION_NOP(i2s),               //0x93
-//
-//        INSTRUCTION_NOP(lcmp),              //0x94
-//        INSTRUCTION_NOP(fcmpl),             //0x95
-//        INSTRUCTION_NOP(fcmpg),             //0x96
-//        INSTRUCTION_NOP(dcmpl),             //0x97
-//        INSTRUCTION_NOP(dcmpg),             //0x98
-//
-//        INSTRUCTION_INT16(ifeq),            //0x99
-//        INSTRUCTION_INT16(ifne),            //0x9a
-//        INSTRUCTION_INT16(iflt),            //0x9b
-//        INSTRUCTION_INT16(ifge),            //0x9c
-//        INSTRUCTION_INT16(ifgt),            //0x9d
-//        INSTRUCTION_INT16(ifle),            //0x9e
-//
-//        INSTRUCTION_INT16(if_icmpeq),       //0x9f
-//        INSTRUCTION_INT16(if_icmpne),       //0xa0
-//        INSTRUCTION_INT16(if_icmplt),       //0xa1
-//        INSTRUCTION_INT16(if_icmpge),       //0xa2
-//        INSTRUCTION_INT16(if_icmpgt),       //0xa3
-//        INSTRUCTION_INT16(if_icmple),       //0xa4
-//        INSTRUCTION_INT16(if_acmpeq),       //0xa5
-//        INSTRUCTION_INT16(if_acmpne),       //0xa6
-//
-//        INSTRUCTION_INT16(goto),            //0xa7
-//        INSTRUCTION_UNSUPPORTED(jsr),       //0xa8
-//        INSTRUCTION_UNSUPPORTED(ret),       //0xa9
-//        INSTRUCTION_TABLESWITCH(tableswitch),//0xaa
-//        INSTRUCTION_LOOKSWITCH(lookupswitch),//0xab
-//
-//        INSTRUCTION_NOP(ireturn),           //0xac
-//        INSTRUCTION_NOP(lreturn),           //0xad
-//        INSTRUCTION_NOP(freturn),           //0xae
-//        INSTRUCTION_NOP(dreturn),           //0xaf
-//        INSTRUCTION_NOP(areturn),           //0xb0
-//        INSTRUCTION_NOP(return),            //0xb1
-//
-//        INSTRUCTION_INDEX16(getstatic),     //0xb2
-//        INSTRUCTION_INDEX16(putstatic),     //0xb3
-//        INSTRUCTION_INDEX16(getfield),      //0xb4
-//        INSTRUCTION_INDEX16(putfield),      //0xb5
-//
-//        INSTRUCTION_INDEX16(invokevirtual), //0xb6
-//        INSTRUCTION_INDEX16(invokespecial), //0xb7
-//        INSTRUCTION_INDEX16(invokestatic),  //0xb8
-//        INSTRUCTION_INVOKE_INTERFACE(invokeinterface),//0xb9
-//        INSTRUCTION_UNSUPPORTED(invokedynamic),        //0xba
-//
-//        INSTRUCTION_INDEX16(new),            //0xbb
-//        INSTRUCTION_NEWARRAY(newarray),     //0xbc
-//        INSTRUCTION_INDEX16(anewarray),     //0xbd
-//
-//        INSTRUCTION_NOP(arraylength),       //0xbe
-//        INSTRUCTION_NOP(athrow),            //0xbf
-//        INSTRUCTION_INDEX16(checkcast),    //0xc0
-//        INSTRUCTION_INDEX16(instanceof),   //0xc1
-//        INSTRUCTION_NOP(monitorenter),      //0xc2
-//        INSTRUCTION_NOP(monitorexit),       //0xc3
-//        INSTRUCTION_WIDE(wide),         //0xc4
-//        INSTRUCTION_MULTIANEWARRAY(multianewarray),//0xc5
-//        INSTRUCTION_INT16(ifnull),       //0xc6
-//        INSTRUCTION_INT16(ifnonnull),    //0xc7
-//        INSTRUCTION_INT32(goto_w),       //0xc8
-//        INSTRUCTION_UNSUPPORTED(jsr_w),        //0xc9
-//        INSTRUCTION_UNSUPPORTED(breakpoint),   //0xca
-//
-//        //......
-//
-//        INSTRUCTION_UNSUPPORTED(impdepl),      //0xfe
-//        INSTRUCTION_UNSUPPORTED(impdepl),      //0xff
+//        int Run_impdep2(Frame *frame);
+
 };

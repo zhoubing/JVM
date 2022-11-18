@@ -155,7 +155,6 @@ int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_siz
         memcpy(s, constantUtf8->str, constantUtf8->length);
         printf("utf8 is %s\n", s);
 
-
         class->methods[i].descriptor_index = vm_read_16bit(class->bytecode_reader);
         printf("method descriptor_index: %d\n", class->methods[i].descriptor_index);
 

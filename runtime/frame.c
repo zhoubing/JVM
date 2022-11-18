@@ -10,7 +10,6 @@
 #include "frame.h"
 
 uint8_t Frame_GetOpCode(Frame *frame) {
-    printf("get_opcode is %d\n", frame);
     return vm_read_8bit(frame->bytecode_reader);
 }
 

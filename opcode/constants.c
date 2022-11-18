@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include "constants.h"
+#include "../bytecode_reader.h"
 
 void Read_noop(Frame *frame) {
     assert(0);
@@ -134,11 +135,13 @@ int Run_dconst_1(Frame *frame) {
 }
 
 void Read_bipush(Frame *frame) {
-    assert(0);
+    frame->localvars->_operand._index.index = (uint16_t) vm_read_8bit(frame->bytecode_reader);
 }
 
 int Run_bipush(Frame *frame) {
-    assert(0);
+    int val = frame->localvars->_operand._index._int8;
+    OperandStack_PushInt(frame->operand_stack, val);
+    return 0;
 }
 
 void Read_sipush(Frame *frame) {

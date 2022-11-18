@@ -18,9 +18,9 @@ void Thread_Run(Thread *this) {
         uint8_t op_code = Frame_GetOpCode(current_frame);
         printf("op_code is %x\n", op_code);
 
-        Instruction instruction = instruction_sets[op_code];
-        instruction.read_operands(&instruction, current_frame);
-        if (instruction.run(&instruction, current_frame) != 0) {
+        OpCode opCode = opcode_sets[op_code];
+        opCode.ReadOpCode(current_frame);
+        if (opCode.Run(current_frame) != 0) {
             for (int i = 0; i < current_frame->localvars_num; i++) {
                 for (int j = 0; j < current_frame->localvars[i].max_size; j++) {
                     printf("LocalVars: %d\n", current_frame->localvars[i].slots[j].num);
