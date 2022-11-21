@@ -7,8 +7,9 @@
 #include "class.h"
 #include "access_flag.h"
 #include "attribute_info.h"
+#include "constant_pool.h"
 
-struct vm_class *gClass;
+VM_Class *gClass;
 
 const char *java_ver[] = {
         "1.1",
@@ -24,7 +25,7 @@ const char *java_ver[] = {
         "11",
 };
 
-int verify_magic_number(Vm_Class *class) {
+int verify_magic_number(VM_Class *class) {
     uint8_t ca = vm_read_8bit(class->bytecode_reader);
     uint8_t fe = vm_read_8bit(class->bytecode_reader);
     uint8_t ba = vm_read_8bit(class->bytecode_reader);
@@ -32,7 +33,7 @@ int verify_magic_number(Vm_Class *class) {
     return ca == 0xca && fe == 0xfe && ba == 0xba && be == 0xbe ? 0 : -1;
 }
 
-int verify_class_version(Vm_Class *class) {
+int verify_class_version(VM_Class *class) {
     uint16_t minor_ver = vm_read_16bit(class->bytecode_reader);
     uint16_t major_ver = vm_read_16bit(class->bytecode_reader);
     class->version.major_version = major_ver;
@@ -80,7 +81,7 @@ void log_access_flag(uint16_t class_access_flag) {
     }
 }
 
-int is_main(struct vm_method *method, struct vm_class *class) {
+int VmClass_IsMain(VM_Method *method, VM_Class *class) {
     uint16_t method_index = method->name_index;
     uint16_t param_index = method->descriptor_index;
     ConstantUtf8 *main_str = (ConstantUtf8 *) class->constant_pool->constant_info_arr[method_index];
@@ -90,7 +91,7 @@ int is_main(struct vm_method *method, struct vm_class *class) {
                                                                                                                   : -1;
 }
 
-int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
+int VmClass_LoadByteCode(VM_Class *class, char *buffer, long buffer_size) {
     class->bytecode_reader = new_bytecode_reader(buffer, buffer_size);
 
     if (verify_magic_number(class) != 0) {
@@ -122,7 +123,7 @@ int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
     }
     printf("interfaces: %d\n", class->interface_count);
     class->field_count = vm_read_16bit(class->bytecode_reader);
-    class->fields = malloc_x (sizeof(struct vm_field) * class->field_count);
+    class->fields = malloc_x (sizeof(Vm_Field) * class->field_count);
     log_file_function_line();
     for (int i = 0; i < class->field_count; i++) {
         class->fields[i].access_flag = vm_read_16bit(class->bytecode_reader);
@@ -140,7 +141,7 @@ int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
     }
     printf("fields: %d\n", class->field_count);
     class->method_count = vm_read_16bit(class->bytecode_reader);
-    class->methods = malloc_x (sizeof(struct vm_method) * class->method_count);
+    class->methods = malloc_x (sizeof(VM_Method) * class->method_count);
     printf("methods: %d\n", class->method_count);
 
     for (int i = 0; i < class->method_count; i++) {
@@ -167,7 +168,6 @@ int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
 
         class->methods[i].attributes_count = vm_read_16bit(class->bytecode_reader);
         class->methods[i].attributes = malloc_x (sizeof(AttributeBase *) * class->methods[i].attributes_count);
-        class->methods[i].is_main = is_main;
         for (int j = 0; j < class->methods[i].attributes_count; j++) {
             AttributeBase *attributeBase = new_attribute(class);
             class->methods[i].attributes[j] = attributeBase;
@@ -182,19 +182,18 @@ int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
 
 }
 
-struct vm_method *get_main(struct vm_class *klass) {
+VM_Method *VmClass_GetMain(VM_Class *klass) {
     for (int i = 0; i < klass->method_count; i++) {
-        struct vm_method m = klass->methods[i];
-        if (m.is_main(&m, klass) == 0) {
+        VM_Method m = klass->methods[i];
+        if (VmClass_IsMain(&m, klass) == 0) {
             return &klass->methods[i];
         }
     }
     return 0;
 }
 
-struct vm_class *vm_class_new() {
-    struct vm_class *class = malloc_x (sizeof(struct vm_class));
-    memset(class, 0x00, sizeof(struct vm_class));
-    class->get_main = get_main;
+VM_Class *VmClass_New() {
+    VM_Class *class = malloc_x (sizeof(VM_Class));
+    memset(class, 0x00, sizeof(VM_Class));
     return class;
 }

@@ -9,13 +9,13 @@
 #include "thread.h"
 
 typedef struct {
-    struct vm_class *class;
+    VM_Class *class;
     Thread *thread;
 } Interpreter;
 
-void Interpreter_Run(Interpreter *, struct vm_method *);
+void Interpreter_Run(Interpreter *, VM_Method *);
 
-Interpreter *Interpreter_New(struct vm_class *class);
+Interpreter *Interpreter_New(VM_Class *class);
 
 void Interpreter_Push(VM_Stack *, Frame *);
 

@@ -6,9 +6,7 @@
 #define UNTITLED2_ATTRIBUTES_INFO_H
 
 #include "bytecode_reader.h"
-#include "class.h"
 
-typedef struct attribute_base AttributeBase;
 typedef struct source_file SourceFile;
 typedef struct signature Signature;
 typedef struct constant_value ConstantValue;
@@ -32,11 +30,11 @@ typedef struct bootstrap_methods BootstrapMethods;
 typedef struct exception Exception;
 
 /*属性*/
-struct attribute_base {
+typedef struct {
     uint16_t attribute_name_index;
     uint32_t attribute_length;
 //    void (*read_info)(AttributeBase *attribute);
-};
+} AttributeBase;
 
 struct source_file {
     AttributeBase base;
@@ -118,7 +116,7 @@ struct local_variable_table_item {
 struct local_variable_table {
     AttributeBase base;
     uint16_t local_variable_table_length;
-    struct local_variable_table_item *table_item
+    struct local_variable_table_item *table_item;
 };
 
 struct local_variable_type_table {
@@ -168,6 +166,8 @@ struct exception {
     uint16_t catch_type;
 };
 
-AttributeBase *new_attribute(struct vm_class *klass);
+struct _VM_Class;
+
+AttributeBase *new_attribute(struct _VM_Class *klass);
 
 #endif //UNTITLED2_ATTRIBUTES_INFO_H

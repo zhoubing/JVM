@@ -40,7 +40,7 @@ struct constant_pool {
     ConstantInfo *(*create_constant_info)(struct vm_bytecode_reader *byte_code_reader, uint8_t tag);
 };
 
-struct constant_pool *new_constant_pool(struct vm_class *class, uint16_t pool_size);
+struct constant_pool *new_constant_pool(VM_Class *class, uint16_t pool_size);
 
 struct constant_info {
     uint8_t tag;

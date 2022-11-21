@@ -7,13 +7,13 @@
 #include "frame.h"
 #include "thread.h"
 
-void Interpreter_Run(Interpreter *interpreter, struct vm_method *method) {
+void Interpreter_Run(Interpreter *interpreter, VM_Method *method) {
     Frame *frame = Frame_New(method, interpreter->class);
     Interpreter_Push(interpreter->thread->vmStack, frame);
     Thread_Run(interpreter->thread);
 }
 
-Interpreter *Interpreter_New(struct vm_class *class) {
+Interpreter *Interpreter_New(VM_Class *class) {
     Interpreter *ip = malloc_x(sizeof(Interpreter));
     ip->class = class;
     ip->thread = Thread_New();

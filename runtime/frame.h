@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include "localvars.h"
+#include "../class.h"
 
 typedef struct Frame {
     int pc;
@@ -17,9 +18,11 @@ typedef struct Frame {
     OperandStack *operand_stack;
     struct vm_bytecode_reader *bytecode_reader;
     uint8_t (*get_opcode)(struct frame *frame);
+
+    VM_Class *klass; //temp?????
 } Frame;
 
-Frame *Frame_New(struct vm_method *method, struct vm_class *class);
+Frame *Frame_New(VM_Method *method, VM_Class *class);
 
 uint8_t Frame_GetOpCode(Frame *);
 

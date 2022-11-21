@@ -5,10 +5,12 @@
 #include <stdlib.h>
 #include <memory.h>
 #include <assert.h>
+#include <string.h>
 #include "utility.h"
 #include "attribute_info.h"
+#include "constant_pool.h"
 
-AttributeBase *new_attribute(struct vm_class *klass) {
+AttributeBase *new_attribute(VM_Class *klass) {
     log_file_function_line();
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7
 //    AttributeBase *attributeBase = (AttributeBase *) malloc_x (sizeof(AttributeBase));

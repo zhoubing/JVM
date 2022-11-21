@@ -5,6 +5,7 @@
 #include <assert.h>
 #include "references.h"
 #include "stdbool.h"
+#include "../constant_pool.h"
 
 void Read_getstatic(Frame *frame) {
     //assert(0);
@@ -12,6 +13,8 @@ void Read_getstatic(Frame *frame) {
 
 int Run_getstatic(Frame *frame) {
     assert(false);
+    uint16_t index = vm_read_16bit(frame->bytecode_reader);
+    ConstantInfo *constantInfo = frame->klass->constant_pool->constant_info_arr[index];
 }
 
 void Read_putstatic(Frame *frame) {

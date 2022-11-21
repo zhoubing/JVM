@@ -8,15 +8,16 @@
 #include <assert.h>
 #include "../attribute_info.h"
 #include "frame.h"
+#include "../constant_pool.h"
 
 uint8_t Frame_GetOpCode(Frame *frame) {
     return vm_read_8bit(frame->bytecode_reader);
 }
 
-Frame *Frame_New(struct vm_method *method, struct vm_class *class) {
+Frame *Frame_New(VM_Method *method, VM_Class *class) {
     AttributeBase **attrs = method->attributes;
     printf("Frame_New is %d\n", method->attributes_count);
-    printf("Frame_New is %d\n", method->is_main(method, class));
+    printf("Frame_New is %d\n", VmClass_IsMain(method, class));
     ConstantUtf8 *attribute_name = (ConstantUtf8 *) class->constant_pool->constant_info_arr[method->name_index];
     printf("Frame_New is %s\n", attribute_name->str);
 
@@ -30,6 +31,7 @@ Frame *Frame_New(struct vm_method *method, struct vm_class *class) {
             Code *code_attr = (Code *) attr;
             Frame *frame = malloc_x(sizeof(Frame));
             frame->prev = 0;
+            frame->klass = class;
             frame->bytecode_reader = new_bytecode_reader(code_attr->code, code_attr->code_length);
             frame->localvars = LocalVars_New(code_attr->max_locals);
             frame->localvars_num = code_attr->max_locals;

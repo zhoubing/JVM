@@ -45,11 +45,10 @@ int main(int argc, char **argv) {
     p_class_buffer[file_len] = 0;
     fclose(fp);
 
-    Vm_Class *p_vm_class = VmClass_New();
-    gClass = p_vm_class; //debug用
+    VM_Class *p_vm_class = VmClass_New();
 
-    vm_class_load_bytecode(p_vm_class, p_class_buffer, file_len);
-    struct vm_method *main = p_vm_class->get_main(p_vm_class);
+    VmClass_LoadByteCode(p_vm_class, p_class_buffer, file_len);
+    VM_Method *main = VmClass_GetMain(p_vm_class);
     if (main == 0) {
         exit(-200);
     } else {

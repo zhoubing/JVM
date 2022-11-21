@@ -222,7 +222,7 @@ const ConstantInfo *handle_interface_method_ref(struct vm_bytecode_reader *reade
     return (const ConstantInfo *) ref_info;
 }
 
-struct constant_pool *new_constant_pool(struct vm_class *class, uint16_t pool_size) {
+struct constant_pool *new_constant_pool(VM_Class *class, uint16_t pool_size) {
     printf("start read constant pool...\n");
     struct constant_pool *pool = malloc_x(sizeof(struct constant_pool));
 //    class->constant_pool = pool; //debug?
