@@ -24,7 +24,7 @@ const char *java_ver[] = {
         "11",
 };
 
-int verify_magic_number(struct vm_class *class) {
+int verify_magic_number(Vm_Class *class) {
     uint8_t ca = vm_read_8bit(class->bytecode_reader);
     uint8_t fe = vm_read_8bit(class->bytecode_reader);
     uint8_t ba = vm_read_8bit(class->bytecode_reader);
@@ -32,7 +32,7 @@ int verify_magic_number(struct vm_class *class) {
     return ca == 0xca && fe == 0xfe && ba == 0xba && be == 0xbe ? 0 : -1;
 }
 
-int verify_class_version(struct vm_class *class) {
+int verify_class_version(Vm_Class *class) {
     uint16_t minor_ver = vm_read_16bit(class->bytecode_reader);
     uint16_t major_ver = vm_read_16bit(class->bytecode_reader);
     class->version.major_version = major_ver;
@@ -90,7 +90,7 @@ int is_main(struct vm_method *method, struct vm_class *class) {
                                                                                                                   : -1;
 }
 
-int vm_class_load_bytecode(struct vm_class *class, char *buffer, long buffer_size) {
+int vm_class_load_bytecode(Vm_Class *class, char *buffer, long buffer_size) {
     class->bytecode_reader = new_bytecode_reader(buffer, buffer_size);
 
     if (verify_magic_number(class) != 0) {

@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
     p_class_buffer[file_len] = 0;
     fclose(fp);
 
-    struct vm_class *p_vm_class = vm_class_new();
+    Vm_Class *p_vm_class = VmClass_New();
     gClass = p_vm_class; //debug用
 
     vm_class_load_bytecode(p_vm_class, p_class_buffer, file_len);

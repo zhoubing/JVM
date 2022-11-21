@@ -12,19 +12,15 @@
 #include "attribute_info.h"
 #include "stdint.h"
 
-extern struct vm_class *gClass;
-
 typedef struct interface Interface;
 typedef struct attribute_base AttributeBase;
-
-struct vm_class *vm_class_new ();
 
 struct compiler_version {
     uint16_t major_version;
     uint16_t minor_version;
 };
 
-struct vm_class {
+typedef struct {
     struct vm_bytecode_reader *bytecode_reader;
     struct compiler_version version;
     struct constant_pool *constant_pool;
@@ -43,7 +39,10 @@ struct vm_class {
     struct vm_method *methods;
 
     struct vm_method *(*get_main) (struct vm_class *);
-};
+} Vm_Class;
+
+Vm_Class *VmClass_New();
+
 
 struct interface {
     uint16_t tag;
