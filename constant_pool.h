@@ -52,6 +52,12 @@ struct constant_method_ref_info {
     uint16_t name_and_type_index;
 };
 
+struct constant_field_ref_info {
+    ConstantInfo info;
+    uint16_t class_index;
+    uint16_t name_and_type_index;
+};
+
 struct constant_double_info {
     ConstantInfo info;
     uint32_t high_value;

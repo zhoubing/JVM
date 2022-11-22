@@ -12,14 +12,26 @@ void Read_getstatic(Frame *frame) {
 }
 
 int Run_getstatic(Frame *frame) {
-    assert(false);
     uint16_t index = vm_read_16bit(frame->bytecode_reader);
-    ConstantInfo *constantInfo = frame->klass->constant_pool->constant_info_arr[index];
+    printf("Run_getstatic: %d\n", index);
+    struct constant_field_ref_info *fieldRefInfo = frame->klass->constant_pool->constant_info_arr[index];
+    struct constant_class_info *classInfo = frame->klass->constant_pool->constant_info_arr[fieldRefInfo->class_index];
+    struct constant_utf8 *constantUtf8 = frame->klass->constant_pool->constant_info_arr[classInfo->name_index];
+    printf("Run_getstatic: %s\n", constantUtf8->str);
+
+    struct constant_name_and_type *nameAndType = frame->klass->constant_pool->constant_info_arr[fieldRefInfo->name_and_type_index];
+    struct constant_utf8 *constantUtf81 = frame->klass->constant_pool->constant_info_arr[nameAndType->nameIndex];
+    struct constant_utf8 *constantUtf82 = frame->klass->constant_pool->constant_info_arr[nameAndType->descIndex];
+    printf("Run_getstatic: %s\n", constantUtf81->str);
+    printf("Run_getstatic: %s\n", constantUtf82->str);
+
+    assert(false);
 }
 
 void Read_putstatic(Frame *frame) {
     assert(false);
 }
+
 int Run_putstatic(Frame *frame) {
     assert(false);
 }
