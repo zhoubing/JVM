@@ -131,6 +131,7 @@ int VmClass_LoadByteCode(VM_Class *class, char *buffer, long buffer_size) {
         class->fields[i].name_index = vm_read_16bit(class->bytecode_reader);
         ConstantUtf8 *constantUtf8 = (ConstantUtf8 *) class->constant_pool->constant_info_arr[class->fields[i].name_index];
         class->fields[i].descriptor_index = vm_read_16bit(class->bytecode_reader);
+
         class->fields[i].attributes_count = vm_read_16bit(class->bytecode_reader);
         class->fields[i].attributes = malloc_x (sizeof(AttributeBase *) * class->fields[i].attributes_count);
         log_file_function_line();

@@ -24,7 +24,27 @@ int Run_getstatic(Frame *frame) {
     struct constant_utf8 *constantUtf82 = frame->klass->constant_pool->constant_info_arr[nameAndType->descIndex];
     printf("Run_getstatic: %s\n", constantUtf81->str);
     printf("Run_getstatic: %s\n", constantUtf82->str);
-
+    switch (constantUtf82->str[0]) {
+        case 'L': {
+            printf("PushRef\n");
+        }
+            break;
+        case 'D': {
+            printf("PushDouble\n");
+        }
+            break;
+        case 'J': {
+            printf("PushLong\n");
+        }
+            break;
+        case 'F': {
+            printf("PushFloat\n");
+        }
+            break;
+        default: {
+            printf("PushInt\n");
+        }
+    }
     assert(false);
 }
 
